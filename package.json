@@ -7,6 +7,7 @@
     "start:backend": "cd backend && npm start",
     "start:frontend": "cd frontend && npm start",
     "dev:backend": "cd backend && npm run dev",
-    "start": "npm run start:backend"
+    "start": "npm run start:backend",
+    "dev:deploy": "bash scripts/setup-db.sh && cd backend && npm run dev"
   }
 }
