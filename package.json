@@ -8,6 +8,6 @@
     "start:frontend": "cd frontend && npm start",
     "dev:backend": "cd backend && npm run dev",
     "start": "npm run start:backend",
-    "dev:deploy": "node scripts/setup-db.js && cd backend && npm run dev"
+    "dev:deploy": "node scripts/setup-db.js && cd backend && npm install && npm run dev"
   }
 }
