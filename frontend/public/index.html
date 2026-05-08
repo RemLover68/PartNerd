@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MARCAS / CONTACTOS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;700&family=IBM+Plex+Sans:wght@300;400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --bg2: #111111;
+      --bg3: #1a1a1a;
+      --border: #2a2a2a;
+      --border2: #3a3a3a;
+      --text: #e8e8e8;
+      --text2: #888;
+      --text3: #555;
+      --accent: #c8ff00;
+      --accent2: #00d4ff;
+      --warn: #ff6b00;
+      --err: #ff3b3b;
+      --ok: #00ff88;
+      --mono: 'IBM Plex Mono', monospace;
+      --sans: 'IBM Plex Sans', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--mono);
+      font-size: 13px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* HEADER */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      height: 56px;
+      border-bottom: 1px solid var(--border2);
+      background: var(--bg2);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
+
+    .logo span { color: var(--text2); font-weight: 300; }
+
+    .header-stats {
+      display: flex;
+      gap: 24px;
+    }
+
+    .stat-chip {
+      font-size: 11px;
+      color: var(--text2);
+    }
+
+    .stat-chip b {
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    /* LAYOUT */
+    .app {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      min-height: calc(100vh - 56px);
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      background: var(--bg2);
+      border-right: 1px solid var(--border);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .section-label {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      color: var(--text3);
+      text-transform: uppercase;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* UPLOAD ZONE */
+    .upload-zone {
+      border: 1px dashed var(--border2);
+      border-radius: 4px;
+      padding: 24px 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+    }
+
+    .upload-zone:hover, .upload-zone.drag-over {
+      border-color: var(--accent);
+      background: rgba(200, 255, 0, 0.03);
+    }
+
+    .upload-zone input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+
+    .upload-icon {
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
+
+    .upload-zone p {
+      color: var(--text2);
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    .upload-zone .file-name {
+      color: var(--accent);
+      font-size: 11px;
+      margin-top: 6px;
+      word-break: break-all;
+    }
+
+    /* BOTONES */
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 9px 14px;
+      border: 1px solid var(--border2);
+      background: transparent;
+      color: var(--text);
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      border-radius: 3px;
+      text-transform: uppercase;
+      transition: all 0.15s;
+      width: 100%;
+    }
+
+    .btn:hover { border-color: var(--text2); background: var(--bg3); }
+
+    .btn-primary {
+      border-color: var(--accent);
+      color: var(--bg);
+      background: var(--accent);
+      font-weight: 700;
+    }
+    .btn-primary:hover { background: #d6ff1a; border-color: #d6ff1a; }
+
+    .btn-danger { border-color: var(--err); color: var(--err); }
+    .btn-danger:hover { background: rgba(255,59,59,0.1); }
+
+    .btn-info { border-color: var(--accent2); color: var(--accent2); }
+    .btn-info:hover { background: rgba(0,212,255,0.07); }
+
+    .btn-warn { border-color: var(--warn); color: var(--warn); }
+    .btn-warn:hover { background: rgba(255,107,0,0.07); }
+
+    .btn:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+
+    .btn-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    /* SEARCH */
+    .search-wrap {
+      position: relative;
+    }
+
+    .search-wrap input {
+      width: 100%;
+      padding: 8px 10px 8px 32px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: var(--mono);
+      font-size: 12px;
+      border-radius: 3px;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    .search-wrap input:focus { border-color: var(--text2); }
+    .search-wrap input::placeholder { color: var(--text3); }
+
+    .search-icon {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text3);
+      font-size: 13px;
+      pointer-events: none;
+    }
+
+    /* SELECTION INFO */
+    .selection-info {
+      background: var(--bg3);
+      border: 1px solid var(--border2);
+      border-radius: 3px;
+      padding: 10px 12px;
+      font-size: 11px;
+      color: var(--text2);
+    }
+
+    .selection-info b { color: var(--accent); }
+
+    /* MAIN CONTENT */
+    .main {
+      padding: 20px 24px;
+      overflow-y: auto;
+    }
+
+    /* TOAST */
+    #toast-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 999;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .toast {
+      background: var(--bg3);
+      border: 1px solid var(--border2);
+      border-radius: 4px;
+      padding: 10px 16px;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 260px;
+      animation: slideIn 0.2s ease;
+      max-width: 380px;
+    }
+
+    .toast.ok { border-color: var(--ok); }
+    .toast.err { border-color: var(--err); }
+    .toast.info { border-color: var(--accent2); }
+    .toast.warn { border-color: var(--warn); }
+
+    @keyframes slideIn {
+      from { transform: translateX(20px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    /* TABLA / LISTA */
+    .table-wrap {
+      width: 100%;
+    }
+
+    .table-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .table-header h2 {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      color: var(--text2);
+      text-transform: uppercase;
+    }
+
+    .count-badge {
+      background: var(--bg3);
+      border: 1px solid var(--border2);
+      border-radius: 2px;
+      padding: 2px 8px;
+      font-size: 10px;
+      color: var(--text2);
+    }
+
+    /* CARDS GRID */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+      gap: 12px;
+    }
+
+    .card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      transition: border-color 0.15s;
+      position: relative;
+    }
+
+    .card:hover { border-color: var(--border2); }
+    .card.selected { border-color: var(--accent); }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px 10px;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+    }
+
+    .card-checkbox {
+      width: 14px;
+      height: 14px;
+      accent-color: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .card-marca {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: 0.05em;
+      flex: 1;
+      text-transform: uppercase;
+    }
+
+    .status-badge {
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 2px 7px;
+      border-radius: 2px;
+      font-weight: 600;
+    }
+
+    .status-pendiente { color: var(--text3); border: 1px solid var(--text3); }
+    .status-procesando { color: var(--warn); border: 1px solid var(--warn); animation: pulse 1.2s infinite; }
+    .status-enriquecido { color: var(--ok); border: 1px solid var(--ok); }
+    .status-error { color: var(--err); border: 1px solid var(--err); }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    .card-body {
+      padding: 12px 14px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px 16px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .field-label {
+      font-size: 9px;
+      letter-spacing: 0.15em;
+      color: var(--text3);
+      text-transform: uppercase;
+    }
+
+    .field-value {
+      font-size: 12px;
+      color: var(--text);
+      word-break: break-word;
+    }
+
+    .field-value a {
+      color: var(--accent2);
+      text-decoration: none;
+    }
+    .field-value a:hover { text-decoration: underline; }
+
+    .field-value.empty { color: var(--text3); font-style: italic; }
+
+    .field.full { grid-column: 1 / -1; }
+
+    /* Líneas de producto chip */
+    .lineas-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 3px;
+    }
+
+    .linea-chip {
+      background: var(--bg3);
+      border: 1px solid var(--border2);
+      border-radius: 2px;
+      padding: 2px 7px;
+      font-size: 10px;
+      color: var(--text2);
+      letter-spacing: 0.05em;
+    }
+
+    .linea-chip.enriched {
+      border-color: rgba(0, 212, 255, 0.3);
+      color: var(--accent2);
+      background: rgba(0, 212, 255, 0.04);
+    }
+
+    /* Descripción enriquecida */
+    .descripcion-box {
+      background: var(--bg3);
+      border: 1px solid rgba(0, 212, 255, 0.15);
+      border-radius: 3px;
+      padding: 8px 10px;
+      font-size: 11px;
+      color: var(--text2);
+      line-height: 1.6;
+      font-family: var(--sans);
+      margin-top: 4px;
+    }
+
+    /* CARD ACTIONS */
+    .card-actions {
+      display: flex;
+      gap: 6px;
+      padding: 10px 14px;
+      border-top: 1px solid var(--border);
+      background: var(--bg);
+    }
+
+    .card-btn {
+      flex: 1;
+      padding: 6px 8px;
+      border: 1px solid var(--border2);
+      background: transparent;
+      color: var(--text2);
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: all 0.15s;
+    }
+
+    .card-btn:hover { border-color: var(--text2); color: var(--text); }
+    .card-btn.danger { color: var(--err); border-color: transparent; }
+    .card-btn.danger:hover { border-color: var(--err); background: rgba(255,59,59,0.07); }
+    .card-btn.enrich { color: var(--accent2); border-color: transparent; }
+    .card-btn.enrich:hover { border-color: var(--accent2); background: rgba(0,212,255,0.05); }
+    .card-btn.delete-all { color: var(--err); border-color: transparent; }
+    .card-btn.delete-all:hover { border-color: var(--err); }
+    .card-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+    /* EMPTY STATE */
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 80px 20px;
+      color: var(--text3);
+      text-align: center;
+      gap: 12px;
+    }
+
+    .empty-state .big-icon { font-size: 40px; }
+    .empty-state h3 { font-size: 13px; color: var(--text2); letter-spacing: 0.1em; }
+    .empty-state p { font-size: 11px; max-width: 300px; }
+
+    /* MODAL */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.75);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-overlay.open { display: flex; }
+
+    .modal {
+      background: var(--bg2);
+      border: 1px solid var(--border2);
+      border-radius: 4px;
+      padding: 24px;
+      max-width: 480px;
+      width: 90%;
+    }
+
+    .modal h3 {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      color: var(--accent);
+    }
+
+    .modal p {
+      font-size: 12px;
+      color: var(--text2);
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+
+    .modal-btn {
+      padding: 8px 16px;
+      border-radius: 3px;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border: 1px solid var(--border2);
+      background: transparent;
+      color: var(--text2);
+      transition: all 0.15s;
+    }
+
+    .modal-btn:hover { border-color: var(--text2); color: var(--text); }
+    .modal-btn.confirm { background: var(--err); border-color: var(--err); color: white; }
+    .modal-btn.confirm:hover { background: #ff5555; }
+
+    /* SCROLLBAR */
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+    /* LOADING BAR */
+    #loading-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 2px;
+      background: var(--accent);
+      width: 0%;
+      transition: width 0.3s ease;
+      z-index: 9999;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .app { grid-template-columns: 1fr; }
+      .sidebar {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+      .header-stats { display: none; }
+      .cards-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="loading-bar"></div>
+<div id="toast-container"></div>
+
+<!-- CONFIRM MODAL -->
+<div class="modal-overlay" id="confirm-modal">
+  <div class="modal">
+    <h3 id="modal-title">Confirmar acción</h3>
+    <p id="modal-body">¿Estás seguro?</p>
+    <div class="modal-actions">
+      <button class="modal-btn" id="modal-cancel">Cancelar</button>
+      <button class="modal-btn confirm" id="modal-confirm">Confirmar</button>
+    </div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">MRKS<span>/</span>CTR</div>
+  <div class="header-stats">
+    <div class="stat-chip">Total: <b id="stat-total">—</b></div>
+    <div class="stat-chip">Enriquecidos: <b id="stat-enriched">—</b></div>
+    <div class="stat-chip">Pendientes: <b id="stat-pending">—</b></div>
+  </div>
+</header>
+
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="section-label">Importar</div>
+
+    <!-- UPLOAD ZONE -->
+    <div class="upload-zone" id="upload-zone">
+      <input type="file" id="file-input" accept=".txt" />
+      <div class="upload-icon">◎</div>
+      <p>Arrastra tu archivo .txt<br/>o haz click para seleccionar</p>
+      <div class="file-name" id="file-name-display" style="display:none"></div>
+    </div>
+
+    <button class="btn btn-primary" id="btn-upload" disabled>
+      ↑ Cargar Archivo
+    </button>
+
+    <div class="section-label">Búsqueda</div>
+
+    <div class="search-wrap">
+      <span class="search-icon">⌕</span>
+      <input type="text" id="search-input" placeholder="Buscar marca, contacto..." />
+    </div>
+
+    <div class="section-label">Acciones masivas</div>
+
+    <div class="selection-info" id="selection-info">
+      <b id="selected-count">0</b> registros seleccionados
+    </div>
+
+    <div class="btn-group">
+      <button class="btn btn-info" id="btn-enrich-selected" disabled>
+        ✦ Enriquecer seleccionados
+      </button>
+      <button class="btn btn-danger" id="btn-delete-lineas-selected" disabled>
+        ✕ Eliminar líneas seleccionados
+      </button>
+    </div>
+
+    <div class="section-label">Global</div>
+
+    <div class="btn-group">
+      <button class="btn" id="btn-select-all">☐ Seleccionar todos</button>
+      <button class="btn" id="btn-deselect-all">☐ Deseleccionar todos</button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <div class="table-header">
+      <h2>Registros</h2>
+      <span class="count-badge" id="records-count">0 registros</span>
+    </div>
+
+    <div class="cards-grid" id="cards-container">
+      <div class="empty-state" style="grid-column:1/-1">
+        <div class="big-icon">◈</div>
+        <h3>Sin registros</h3>
+        <p>Carga un archivo .txt con el formato de marcas/contactos para comenzar</p>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+const API = 'http://localhost:3001/api';
+let records = [];
+let selectedIds = new Set();
+let pendingFile = null;
+let confirmCallback = null;
+let pollInterval = null;
+
+// ─── UTILS ───────────────────────────────────────────────
+
+function toast(msg, type = 'info') {
+  const el = document.createElement('div');
+  el.className = `toast ${type}`;
+  const icons = { ok: '✓', err: '✕', info: '◉', warn: '△' };
+  el.innerHTML = `<span>${icons[type] || '◉'}</span><span>${msg}</span>`;
+  document.getElementById('toast-container').appendChild(el);
+  setTimeout(() => el.remove(), 4000);
+}
+
+function loading(on) {
+  const bar = document.getElementById('loading-bar');
+  bar.style.width = on ? '70%' : '100%';
+  if (!on) setTimeout(() => { bar.style.width = '0%'; }, 300);
+}
+
+function confirm(title, body, onConfirm) {
+  document.getElementById('modal-title').textContent = title;
+  document.getElementById('modal-body').textContent = body;
+  document.getElementById('confirm-modal').classList.add('open');
+  confirmCallback = onConfirm;
+}
+
+document.getElementById('modal-cancel').addEventListener('click', () => {
+  document.getElementById('confirm-modal').classList.remove('open');
+  confirmCallback = null;
+});
+
+document.getElementById('modal-confirm').addEventListener('click', () => {
+  document.getElementById('confirm-modal').classList.remove('open');
+  if (confirmCallback) confirmCallback();
+  confirmCallback = null;
+});
+
+function updateSelectionUI() {
+  const count = selectedIds.size;
+  document.getElementById('selected-count').textContent = count;
+  document.getElementById('btn-enrich-selected').disabled = count === 0;
+  document.getElementById('btn-delete-lineas-selected').disabled = count === 0;
+}
+
+// ─── API ─────────────────────────────────────────────────
+
+async function api(method, path, body) {
+  const opts = {
+    method,
+    headers: { 'Content-Type': 'application/json' },
+  };
+  if (body) opts.body = JSON.stringify(body);
+  const r = await fetch(`${API}${path}`, opts);
+  if (!r.ok) {
+    const err = await r.json().catch(() => ({ error: 'Error desconocido' }));
+    throw new Error(err.error || `HTTP ${r.status}`);
+  }
+  return r.json();
+}
+
+async function loadRecords(q) {
+  loading(true);
+  try {
+    const url = q ? `/marcas?q=${encodeURIComponent(q)}` : '/marcas';
+    records = await api('GET', url);
+    renderCards();
+    await loadStats();
+  } catch (err) {
+    toast(`Error cargando registros: ${err.message}`, 'err');
+  } finally {
+    loading(false);
+  }
+}
+
+async function loadStats() {
+  try {
+    const s = await api('GET', '/stats');
+    document.getElementById('stat-total').textContent = s.total;
+    document.getElementById('stat-enriched').textContent = s.enriquecidos;
+    document.getElementById('stat-pending').textContent = s.pendientes;
+  } catch (_) {}
+}
+
+// ─── RENDER ──────────────────────────────────────────────
+
+function renderCards() {
+  const container = document.getElementById('cards-container');
+  document.getElementById('records-count').textContent = `${records.length} registros`;
+
+  if (records.length === 0) {
+    container.innerHTML = `
+      <div class="empty-state" style="grid-column:1/-1">
+        <div class="big-icon">◈</div>
+        <h3>Sin registros</h3>
+        <p>Carga un archivo .txt con el formato de marcas/contactos para comenzar</p>
+      </div>`;
+    return;
+  }
+
+  container.innerHTML = records.map(r => renderCard(r)).join('');
+
+  // Events
+  container.querySelectorAll('.card-checkbox').forEach(cb => {
+    cb.addEventListener('change', (e) => {
+      const id = parseInt(e.target.dataset.id);
+      if (e.target.checked) selectedIds.add(id);
+      else selectedIds.delete(id);
+      document.querySelector(`.card[data-id="${id}"]`)?.classList.toggle('selected', e.target.checked);
+      updateSelectionUI();
+    });
+  });
+
+  container.querySelectorAll('.card-header').forEach(h => {
+    h.addEventListener('click', (e) => {
+      if (e.target.type === 'checkbox') return;
+      const cb = h.querySelector('.card-checkbox');
+      cb.checked = !cb.checked;
+      cb.dispatchEvent(new Event('change'));
+    });
+  });
+
+  container.querySelectorAll('[data-action="enrich"]').forEach(btn => {
+    btn.addEventListener('click', () => enrichOne(parseInt(btn.dataset.id)));
+  });
+
+  container.querySelectorAll('[data-action="del-lineas"]').forEach(btn => {
+    btn.addEventListener('click', () => deleteLineas(parseInt(btn.dataset.id)));
+  });
+
+  container.querySelectorAll('[data-action="del-record"]').forEach(btn => {
+    btn.addEventListener('click', () => deleteRecord(parseInt(btn.dataset.id)));
+  });
+}
+
+function renderCard(r) {
+  const isSelected = selectedIds.has(r.id);
+  const statusClass = `status-${r.estado}`;
+  const statusLabels = {
+    pendiente: 'PENDIENTE',
+    procesando: '⟳ PROCESANDO',
+    enriquecido: '✓ ENRIQUECIDO',
+    error: '✕ ERROR'
+  };
+
+  const lineasOriginal = r.lineas_producto
+    ? r.lineas_producto.split(',').map(l =>
+        `<span class="linea-chip">${l.trim()}</span>`
+      ).join('')
+    : `<span class="field-value empty">—</span>`;
+
+  const lineasEnriquecidas = r.lineas_enriquecidas
+    ? r.lineas_enriquecidas.split(',').map(l =>
+        `<span class="linea-chip enriched">${l.trim()}</span>`
+      ).join('')
+    : '';
+
+  const descripcion = r.descripcion_enriquecida
+    ? `<div class="field full">
+         <div class="field-label">◈ Descripción IA</div>
+         <div class="descripcion-box">${r.descripcion_enriquecida}</div>
+       </div>`
+    : '';
+
+  const enrichSection = lineasEnriquecidas
+    ? `<div class="field full">
+         <div class="field-label">◈ Líneas IA</div>
+         <div class="lineas-wrap">${lineasEnriquecidas}</div>
+       </div>`
+    : '';
+
+  const disabledEnrich = r.estado === 'procesando' ? 'disabled' : '';
+  const noUrl = !r.url ? 'disabled title="Sin URL"' : '';
+
+  return `
+  <div class="card ${isSelected ? 'selected' : ''}" data-id="${r.id}">
+    <div class="card-header">
+      <input type="checkbox" class="card-checkbox" data-id="${r.id}" ${isSelected ? 'checked' : ''} />
+      <span class="card-marca">${escHtml(r.marca || '—')}</span>
+      <span class="status-badge ${statusClass}">${statusLabels[r.estado] || r.estado}</span>
+    </div>
+    <div class="card-body">
+      <div class="field">
+        <div class="field-label">Contacto</div>
+        <div class="field-value">${escHtml(r.contacto || '—')}</div>
+      </div>
+      <div class="field">
+        <div class="field-label">Teléfono</div>
+        <div class="field-value">${escHtml(r.telefono || '—')}</div>
+      </div>
+      <div class="field full">
+        <div class="field-label">Correo</div>
+        <div class="field-value">${r.correo ? `<a href="mailto:${escHtml(r.correo)}">${escHtml(r.correo)}</a>` : '—'}</div>
+      </div>
+      <div class="field full">
+        <div class="field-label">URL</div>
+        <div class="field-value">${r.url ? `<a href="${escHtml(r.url)}" target="_blank" rel="noopener">${escHtml(r.url)}</a>` : '—'}</div>
+      </div>
+      ${r.lineas_producto !== null ? `
+      <div class="field full">
+        <div class="field-label">Líneas de producto (original)</div>
+        <div class="lineas-wrap">${lineasOriginal}</div>
+      </div>` : ''}
+      ${enrichSection}
+      ${descripcion}
+    </div>
+    <div class="card-actions">
+      <button class="card-btn enrich" data-action="enrich" data-id="${r.id}" ${disabledEnrich} ${noUrl}>
+        ✦ Enriquecer
+      </button>
+      <button class="card-btn danger" data-action="del-lineas" data-id="${r.id}" ${r.lineas_producto === null ? 'disabled' : ''}>
+        ✕ Líneas
+      </button>
+      <button class="card-btn delete-all" data-action="del-record" data-id="${r.id}">
+        ⌫ Eliminar
+      </button>
+    </div>
+  </div>`;
+}
+
+function escHtml(s) {
+  if (!s) return '';
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+// ─── ACCIONES ────────────────────────────────────────────
+
+async function enrichOne(id) {
+  const r = records.find(x => x.id === id);
+  if (!r) return;
+  try {
+    // Actualizar UI localmente
+    r.estado = 'procesando';
+    renderCards();
+    toast(`Enriqueciendo "${r.marca}"…`, 'info');
+
+    const result = await api('POST', `/marcas/${id}/enrich`);
+    Object.assign(r, result.record);
+    renderCards();
+    toast(`"${r.marca}" enriquecido correctamente`, 'ok');
+    await loadStats();
+  } catch (err) {
+    const rec = records.find(x => x.id === id);
+    if (rec) rec.estado = 'error';
+    renderCards();
+    toast(`Error: ${err.message}`, 'err');
+  }
+}
+
+async function deleteLineas(id) {
+  const r = records.find(x => x.id === id);
+  if (!r) return;
+  confirm(
+    'Eliminar líneas de producto',
+    `¿Eliminar las líneas de producto de "${r.marca}"? Esta acción no se puede deshacer.`,
+    async () => {
+      try {
+        const result = await api('DELETE', `/marcas/${id}/lineas`);
+        Object.assign(r, result.record);
+        renderCards();
+        toast('Líneas de producto eliminadas', 'ok');
+      } catch (err) {
+        toast(`Error: ${err.message}`, 'err');
+      }
+    }
+  );
+}
+
+async function deleteRecord(id) {
+  const r = records.find(x => x.id === id);
+  if (!r) return;
+  confirm(
+    'Eliminar registro',
+    `¿Eliminar completamente "${r.marca}"? Esta acción no se puede deshacer.`,
+    async () => {
+      try {
+        await api('DELETE', `/marcas/${id}`);
+        records = records.filter(x => x.id !== id);
+        selectedIds.delete(id);
+        renderCards();
+        updateSelectionUI();
+        await loadStats();
+        toast('Registro eliminado', 'ok');
+      } catch (err) {
+        toast(`Error: ${err.message}`, 'err');
+      }
+    }
+  );
+}
+
+// ─── BULK ACTIONS ─────────────────────────────────────────
+
+document.getElementById('btn-enrich-selected').addEventListener('click', async () => {
+  const ids = [...selectedIds];
+  if (ids.length === 0) return;
+  confirm(
+    'Enriquecer registros',
+    `¿Enriquecer ${ids.length} registro(s) con scraping + IA? Este proceso puede tardar varios segundos por registro.`,
+    async () => {
+      try {
+        await api('POST', '/marcas/enrich/bulk', { ids });
+        toast(`Enriquecimiento iniciado para ${ids.length} registro(s)`, 'info');
+        // Actualizar estado local
+        ids.forEach(id => {
+          const r = records.find(x => x.id === id);
+          if (r) r.estado = 'procesando';
+        });
+        renderCards();
+        startPolling();
+      } catch (err) {
+        toast(`Error: ${err.message}`, 'err');
+      }
+    }
+  );
+});
+
+document.getElementById('btn-delete-lineas-selected').addEventListener('click', () => {
+  const ids = [...selectedIds];
+  if (ids.length === 0) return;
+  confirm(
+    'Eliminar líneas de producto',
+    `¿Eliminar las líneas de producto de ${ids.length} registro(s)?`,
+    async () => {
+      try {
+        await api('DELETE', '/marcas/lineas/bulk', { ids });
+        ids.forEach(id => {
+          const r = records.find(x => x.id === id);
+          if (r) r.lineas_producto = null;
+        });
+        renderCards();
+        toast(`Líneas eliminadas de ${ids.length} registro(s)`, 'ok');
+      } catch (err) {
+        toast(`Error: ${err.message}`, 'err');
+      }
+    }
+  );
+});
+
+document.getElementById('btn-select-all').addEventListener('click', () => {
+  records.forEach(r => selectedIds.add(r.id));
+  updateSelectionUI();
+  renderCards();
+});
+
+document.getElementById('btn-deselect-all').addEventListener('click', () => {
+  selectedIds.clear();
+  updateSelectionUI();
+  renderCards();
+});
+
+// ─── POLLING (para enriquecimiento bulk) ──────────────────
+
+function startPolling() {
+  if (pollInterval) return;
+  pollInterval = setInterval(async () => {
+    const processing = records.filter(r => r.estado === 'procesando');
+    if (processing.length === 0) {
+      clearInterval(pollInterval);
+      pollInterval = null;
+      return;
+    }
+    // Recargar solo los que están procesando
+    for (const r of processing) {
+      try {
+        const updated = await api('GET', `/marcas/${r.id}`);
+        if (updated.estado !== 'procesando') {
+          Object.assign(r, updated);
+        }
+      } catch (_) {}
+    }
+    renderCards();
+    await loadStats();
+  }, 3000);
+}
+
+// ─── UPLOAD ──────────────────────────────────────────────
+
+const fileInput = document.getElementById('file-input');
+const uploadZone = document.getElementById('upload-zone');
+const btnUpload = document.getElementById('btn-upload');
+const fileNameDisplay = document.getElementById('file-name-display');
+
+fileInput.addEventListener('change', (e) => {
+  pendingFile = e.target.files[0];
+  if (pendingFile) {
+    fileNameDisplay.textContent = pendingFile.name;
+    fileNameDisplay.style.display = 'block';
+    btnUpload.disabled = false;
+  }
+});
+
+uploadZone.addEventListener('dragover', (e) => {
+  e.preventDefault();
+  uploadZone.classList.add('drag-over');
+});
+
+uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag-over'));
+
+uploadZone.addEventListener('drop', (e) => {
+  e.preventDefault();
+  uploadZone.classList.remove('drag-over');
+  const file = e.dataTransfer.files[0];
+  if (file && file.name.endsWith('.txt')) {
+    pendingFile = file;
+    fileNameDisplay.textContent = file.name;
+    fileNameDisplay.style.display = 'block';
+    btnUpload.disabled = false;
+  } else {
+    toast('Solo se aceptan archivos .txt', 'warn');
+  }
+});
+
+btnUpload.addEventListener('click', async () => {
+  if (!pendingFile) return;
+  loading(true);
+  btnUpload.disabled = true;
+  try {
+    const formData = new FormData();
+    formData.append('archivo', pendingFile);
+    const r = await fetch(`${API}/upload`, { method: 'POST', body: formData });
+    const data = await r.json();
+    if (!r.ok) throw new Error(data.error);
+    toast(`${data.count} registro(s) importado(s)`, 'ok');
+    pendingFile = null;
+    fileInput.value = '';
+    fileNameDisplay.style.display = 'none';
+    await loadRecords();
+  } catch (err) {
+    toast(`Error al cargar: ${err.message}`, 'err');
+    btnUpload.disabled = false;
+  } finally {
+    loading(false);
+  }
+});
+
+// ─── SEARCH ──────────────────────────────────────────────
+
+let searchTimeout;
+document.getElementById('search-input').addEventListener('input', (e) => {
+  clearTimeout(searchTimeout);
+  searchTimeout = setTimeout(() => loadRecords(e.target.value), 350);
+});
+
+// ─── INIT ────────────────────────────────────────────────
+
+loadRecords();
+</script>
+
+</body>
+</html>

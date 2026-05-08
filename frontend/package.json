@@ -1,0 +1,13 @@
+{
+  "name": "marca-frontend",
+  "version": "1.0.0",
+  "description": "Frontend para gestión de marcas y contactos",
+  "scripts": {
+    "start": "npx serve public -p 3000",
+    "dev": "npx live-server public --port=3000"
+  },
+  "devDependencies": {
+    "live-server": "^1.2.2",
+    "serve": "^14.2.1"
+  }
+}
